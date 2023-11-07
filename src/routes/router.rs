@@ -55,9 +55,12 @@ pub async fn router() -> Router {
                                 "/",
                                 Router::new()
                                     .route("/logout", get(authentication::logout::index))
-                                    .route("/me", get(authentication::me::index)),
-                            )
-                            .route_layer(middleware::from_fn_with_state(app_state.clone(), auth)),
+                                    .route("/me", get(authentication::me::index))
+                                    .route_layer(middleware::from_fn_with_state(
+                                        app_state.clone(),
+                                        auth,
+                                    )),
+                            ),
                     )
                     .fallback(fallback)
                     .with_state(app_state),
