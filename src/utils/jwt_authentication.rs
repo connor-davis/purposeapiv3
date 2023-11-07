@@ -47,7 +47,7 @@ pub async fn auth<B>(
 
     let token = token.ok_or_else(|| {
         let json_error = ErrorResponse {
-            status: "fail",
+            status: "UNAUTHORIZED",
             message: "You are not logged in, please provide token".to_string(),
         };
         (StatusCode::UNAUTHORIZED, Json(json_error))
@@ -60,7 +60,7 @@ pub async fn auth<B>(
     )
     .map_err(|_| {
         let json_error = ErrorResponse {
-            status: "fail",
+            status: "UNAUTHORIZED",
             message: "Invalid token".to_string(),
         };
         (StatusCode::UNAUTHORIZED, Json(json_error))
@@ -69,7 +69,7 @@ pub async fn auth<B>(
 
     let user_id = uuid::Uuid::parse_str(&claims.sub).map_err(|_| {
         let json_error = ErrorResponse {
-            status: "fail",
+            status: "UNAUTHORIZED",
             message: "Invalid token".to_string(),
         };
         (StatusCode::UNAUTHORIZED, Json(json_error))
@@ -80,7 +80,7 @@ pub async fn auth<B>(
         .await
         .map_err(|e| {
             let json_error = ErrorResponse {
-                status: "fail",
+                status: "INTERNAL_SERVER_ERROR",
                 message: format!("Error fetching user from database: {}", e),
             };
             (StatusCode::INTERNAL_SERVER_ERROR, Json(json_error))
@@ -88,7 +88,7 @@ pub async fn auth<B>(
 
     let user = user.ok_or_else(|| {
         let json_error = ErrorResponse {
-            status: "fail",
+            status: "UNAUTHORIZED",
             message: "The user belonging to this token no longer exists".to_string(),
         };
         (StatusCode::UNAUTHORIZED, Json(json_error))
