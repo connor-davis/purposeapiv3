@@ -66,7 +66,7 @@ pub async fn router() -> Router {
                     .with_state(app_state),
                 Err(error) => {
                     println!(
-                        "Failed to run database migrations: {}, Using limited router.",
+                        "🔥 Failed to run database migrations: {}, Using limited router.",
                         error
                     );
 
@@ -78,7 +78,7 @@ pub async fn router() -> Router {
         }
         Err(error) => {
             println!(
-                "Failed to run database migrations: {}, Using limited router.",
+                "🔥 Failed to run database migrations: {}, Using limited router.",
                 error
             );
 
